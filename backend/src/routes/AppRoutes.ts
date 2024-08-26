@@ -1,10 +1,8 @@
 import express from "express";
 import upload from "../middleware/multer.middleware";
-import {
-  storeQuestion,
-  uploadFile,
-} from "../controller/QuestionAndAnswer.controller";
+import { storeQuestion } from "../controller/QuestionAndAnswer.controller";
 import { ValidateQuestionForm } from "../middleware/Validation.middleware";
+import { uploadFile } from "../controller/documents.controller";
 
 const appRouter = express.Router();
 

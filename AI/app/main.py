@@ -5,16 +5,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .core.settings import settings
 from .api.v1.endpoints.documents import router as documents_router
+from .api.v1.endpoints.pinecone import router as pinecone_router
 
-def download_nltk_resource(resource_name):
-    try:
-        find(f'tokenizers/{resource_name}')
-    except LookupError:
-        nltk.download(resource_name)
-
-#download nltk resources
-download_nltk_resource('punkt_tab')
-download_nltk_resource('stopwords')
 
 app = FastAPI()
 app.add_middleware(CORSMiddleware,
@@ -26,7 +18,7 @@ app.add_middleware(CORSMiddleware,
 
 #include other routes
 app.include_router(documents_router,prefix='/documents', tags=['documents'])
-
+app.include_router(pinecone_router,prefix='/pinecone', tags=['pinecone'])
 @app.get('/health')
 def api_health():
     return {

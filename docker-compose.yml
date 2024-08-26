@@ -1,0 +1,28 @@
+version: "3"
+
+services:
+  nlp:
+    build:
+      context: /AI
+      dockerfile: Dockerfile
+    ports:
+      - "${NLP_PORT}:8000"
+    volumes:
+      - ./AI:/app/AI/
+  backend:
+    build:
+      context: /backend
+      dockerfile: Dockerfile
+    ports:
+      - "${BACKEND_PORT}:5000"
+    volumes:
+      - ./backend:/app/backend/
+
+  frontend:
+    build:
+      context: /frontend
+      dockerfile: Dockerfile
+    ports:
+      - "${FRONTEND_PORT}:3000"
+    volumes:
+      - ./frontend:/app/frontend/

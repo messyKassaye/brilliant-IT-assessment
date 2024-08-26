@@ -2,6 +2,9 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     cors_origins: list[str]
+    pinecone_api_key: str
+    pinecone_cloud:str
+    pinecone_region:str
     
     class Config:
         env_file = ".env"

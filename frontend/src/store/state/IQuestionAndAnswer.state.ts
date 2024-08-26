@@ -1,7 +1,5 @@
-import { IAnswer } from "../../models/IAnswer.model";
-import { IQuestion } from "../../models/IQuestion.model";
+import { IQuestionAndAnswer } from "../../models/IQuestionAndAnswer.model";
 
-export interface IQuestionAndAnswer{
-    question: IQuestion
-    answer: IAnswer
+export interface IQuestionAndAnswerState {
+  questionAndAnswers: IQuestionAndAnswer[];
 }

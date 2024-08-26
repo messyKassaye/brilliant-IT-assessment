@@ -1,0 +1,39 @@
+.chat-container {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chat-message {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  word-wrap: break-word;
+}
+
+.question-and-answer-style {
+  align-self: flex-end;
+  background-color: rgb(244 244 244 / 1);
+  color: black;
+  text-align: right;
+  padding: 10px;
+  border-radius: 20px;
+}
+
+.tokens-container {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 8px;
+}
+
+.token-card {
+  background-color: gray;
+  color: white;
+  border-radius: 10px;
+  padding: 5px;
+  width: 100%;
+}

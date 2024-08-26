@@ -1,21 +1,26 @@
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
-from transformers import pipeline
-import spacy
+from app.models.loader import nlp, sentiment_analyzer
 
-sentiment_analyzer = pipeline('sentiment-analysis')
-nlp = spacy.load('en_core_web_sm')
-
-def NLP_analysis(text):
+async def NLP_analysis(text):
     # Tokenization
     tokens = word_tokenize(text.lower())
+    
+    # Truncate tokens if they exceed the maximum length
+    max_length = 512
+    if len(tokens) > max_length:
+        tokens = tokens[:max_length]
+
     
     # Remove stop words
     stop_words = set(stopwords.words('english'))
     tokens = [word for word in tokens if word.isalpha() and word not in stop_words]
 
+    # Convert the truncated tokens back to text for sentiment analysis
+    truncated_text = ' '.join(tokens)
+
     # Sentiment analysis
-    sentiment = sentiment_analyzer(text)
+    sentiment = sentiment_analyzer(truncated_text)
 
     # Named Entity Recognition (NER)
     doc = nlp(text)
