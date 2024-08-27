@@ -1,15 +1,20 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
 
 import cors, { CorsOptions } from "cors";
 import appRouter from "./src/routes/AppRoutes";
-import { CORS_ORIGINS, PORT } from "./src/config/config";
+import { CORS_ORIGINS, PORT, swaggerOptions } from "./src/config/config";
 
 const app: Express = express();
 
 const corsOptions: CorsOptions = {
   origin: CORS_ORIGINS,
 };
+
+//API swagger
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(cors(corsOptions));
 app.use(express.json());

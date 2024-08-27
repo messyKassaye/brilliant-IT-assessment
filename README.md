@@ -4,7 +4,7 @@ This assessment is created with Docker container and Manual installation as well
 
 1. AI
 
-   This project is mainly used for NLP analysis, pinecone, and vector generations. The project is created with the FastAPI python framework which is simple and useful to work with AI, Machine learning, and data science development. mainly I used it for document analysis like PDF, DOC, Text files, and Excel. So Tokenization, filtering Stop words, filtering Named entities, and Sentiment analysis is developed using this project To create this project I used some Python libraries like Numpy, torch, pinecone, and spacY
+   This project is mainly used for NLP analysis, pinecone, and vector generations. The project is created with the FastAPI python framework which is simple and useful to work with AI, Machine learning, and data science development. mainly I used it for document analysis like PDF, DOC, Text files, and Excel. So Tokenization, filtering Stop words, filtering Named entities, and Sentiment analysis is developed using this project. To create this project I used some Python libraries like Numpy, torch, pinecone, and spacY
 
 2. Backend
 
@@ -101,7 +101,10 @@ This assessment is created with Docker container and Manual installation as well
       ```base
       uvicorn app.main:app --reload
       ```
-   6. done
+   6. Finally open your browser and paster below command
+      ```base
+      http://localhost:3000
+      ```
 
    ## 2. How to run Backend
 
@@ -147,6 +150,12 @@ npm install --legacy-peer-deps
 
 ```base
 npm start
+```
+
+## 6. Finally open your browser and paster below command
+
+```base
+   http://localhost:3000
 ```
 
 ### finally output
