@@ -12,14 +12,15 @@ const corsOptions: CorsOptions = {
   origin: CORS_ORIGINS,
 };
 
-//API swagger
-const swaggerDocs = swaggerJsdoc(swaggerOptions);
-app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(appRouter);
+
+//API swagger
+const swaggerDocs = swaggerJsdoc(swaggerOptions);
+app.use("/", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).send({
     status: "healthy",

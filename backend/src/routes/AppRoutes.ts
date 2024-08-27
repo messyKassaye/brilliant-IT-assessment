@@ -14,7 +14,6 @@ const appRouter = express.Router();
  *     consumes:
  *       - multipart/form-data
  *     parameters:
- *       - in: formData
  *         name: file
  *         type: file
  *         description: The file to upload.

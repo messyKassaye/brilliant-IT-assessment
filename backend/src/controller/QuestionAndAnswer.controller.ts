@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { CHAT_GPT_MODEL, OPEN_AI_KEY, OPEN_AI_URL } from "../config/config";
 import { IQuestionAndAnswerResponse } from "../responses/IQuestionAndAnswerRespons.response";
 import { IQuestion } from "../models/IQuestion.model";
@@ -22,15 +22,29 @@ export const storeQuestion = async (
     const makeRequestWithRetry = async (
       retries = 3,
       delay = 1000
-    ): Promise<any> => {
+    ): Promise<string> => {
       try {
-        const response = await axios.post(OPEN_AI_URL, formData, {
-          headers: {
-            Authorization: `Bearer ${OPEN_AI_KEY}`,
-            "Content-Type": "application/json",
-          },
-        });
-        return response.data.choices[0].message.content;
+        return axios
+          .post(OPEN_AI_URL, formData, {
+            headers: {
+              Authorization: `Bearer ${OPEN_AI_KEY}`,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => response.data.choices[0].message.content)
+          .catch((err: AxiosError) => {
+            if (err.response && err.response.status === 429 && retries > 0) {
+              const retryAfter = err.response.headers["retry-after"];
+              const waitTime = retryAfter ? Number(retryAfter) * 1000 : delay;
+              console.log(
+                `Rate limit hit. Retrying in ${waitTime / 1000} seconds...`
+              );
+              return new Promise((resolve) =>
+                setTimeout(resolve, waitTime)
+              ).then(() => makeRequestWithRetry(retries - 1, delay * 2)); // backoff
+            }
+            throw err; // Throw the error if retries are exhausted
+          });
       } catch (err: any) {
         if (err.response && err.response.status === 429 && retries > 0) {
           const retryAfter = err.response.headers["retry-after"];
@@ -39,13 +53,13 @@ export const storeQuestion = async (
             `Rate limit hit. Retrying in ${waitTime / 1000} seconds...`
           );
           await new Promise((resolve) => setTimeout(resolve, waitTime));
-          return makeRequestWithRetry(retries - 1, delay * 2); // Exponential backoff
+          return makeRequestWithRetry(retries - 1, delay * 2); // backoff
         }
-        throw err; // Throw the error if retries are exhausted or another error occurs
+        throw err; // Throw the error if retries are exhausted
       }
     };
 
-    const chatGptResponse = await makeRequestWithRetry();
+    const chatGptResponse: string = await makeRequestWithRetry();
 
     const questionResponse: IQuestion = {
       questionType: IQuestionType.Text,
